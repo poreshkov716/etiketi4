@@ -3,5 +3,5 @@ easyocr
 opencv-python-headless
 torch
 torchvision
-numpy
+numpy<2
 Pillow
