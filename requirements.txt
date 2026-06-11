@@ -1,8 +1,8 @@
 streamlit
 easyocr
-pillow
 numpy
 pandas
+pillow
 torch
 torchvision
 opencv-python-headless
