@@ -129,4 +129,70 @@ if image is not None:
         # Показване на таблицата в Streamlit
         st.dataframe(df[["Съставка", "Категория"]], use_container_width=True)
 
-        # 8. Интерактивно мен
+
+        # 8. Интерактивно меню с подробности за съставките
+        st.subheader("📖 Подробна информация")
+
+        selected_ingredient = st.selectbox(
+            "Изберете съставка:",
+            df["Съставка"].tolist()
+        )
+
+        for ingredient in found_ingredients:
+            if ingredient["Съставка"] == selected_ingredient:
+
+                if ingredient["Категория"] == "Вредни":
+                    st.error(f"⚠️ {ingredient['Описание']}")
+
+                elif ingredient["Категория"] == "Полезни":
+                    st.success(f"✅ {ingredient['Описание']}")
+
+                else:
+                    st.info(f"ℹ️ {ingredient['Описание']}")
+
+                break
+
+        st.divider()
+
+        # Статистика
+        harmful_count = len(df[df["Категория"] == "Вредни"])
+        harmless_count = len(df[df["Категория"] == "Безвредни"])
+        useful_count = len(df[df["Категория"] == "Полезни"])
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("✅ Полезни", useful_count)
+
+        with col2:
+            st.metric("ℹ️ Безвредни", harmless_count)
+
+        with col3:
+            st.metric("⚠️ Вредни", harmful_count)
+
+        st.divider()
+
+        # Обща оценка
+        st.subheader("🏆 Оценка на продукта")
+
+        if harmful_count == 0:
+            st.success(
+                "Не бяха открити вредни съставки от наличната база данни."
+            )
+
+        elif harmful_count <= 2:
+            st.warning(
+                "Продуктът съдържа малък брой потенциално вредни съставки."
+            )
+
+        else:
+            st.error(
+                "Продуктът съдържа множество потенциално вредни съставки. Препоръчва се умерена консумация."
+            )
+
+    else:
+        st.warning(
+            "Не бяха открити познати съставки в текста. Опитайте с по-ясна снимка."
+        )
+```
+
